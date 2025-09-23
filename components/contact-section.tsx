@@ -7,8 +7,50 @@ import { Textarea } from "@/components/ui/textarea";
 import { Download, Github, Linkedin, Mail } from "lucide-react";
 import { motion } from "framer-motion";
 import { downloadResume } from "@/lib/utils";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export function ContactSection() {
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (loading) return;
+    try {
+      setLoading(true);
+      const form = e.currentTarget;
+      const formData = new FormData(form);
+      const name = String(formData.get("name") || "").trim();
+      const email = String(formData.get("email") || "").trim();
+      const message = String(formData.get("message") || "").trim();
+
+      if (!name || !email || !message) {
+        toast.error("Please fill in your name, email, and message.");
+        return;
+      }
+
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message }),
+      });
+
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || (data as any)?.success === false) {
+        throw new Error((data as any)?.error || "Failed to send message. Please try again.");
+      }
+
+      toast.success("Message sent", {
+        description: `Thanks ${name.toUpperCase()} for reaching out! I’ll get back to you as soon as possible.`,
+      });
+      form.reset();
+    } catch (err: any) {
+      console.error(err);
+      toast.error(err?.message || "Something went wrong. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  }
   return (
     <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
       <div className="max-w-4xl mx-auto">
@@ -40,19 +82,38 @@ export function ContactSection() {
                 <CardTitle>Send a Message</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div>
-                  <Input placeholder="Your Name" />
-                </div>
-                <div>
-                  <Input type="email" placeholder="Your Email" />
-                </div>
-                <div>
-                  <Textarea placeholder="Your Message" rows={5} />
-                </div>
-                <Button className="w-full">
-                  <Mail className="mr-2 h-4 w-4" />
-                  Send Message
-                </Button>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div>
+                    <Input
+                      name="name"
+                      placeholder="Your Name"
+                      required
+                      aria-label="Your Name"
+                    />
+                  </div>
+                  <div>
+                    <Input
+                      name="email"
+                      type="email"
+                      placeholder="Your Email"
+                      required
+                      aria-label="Your Email"
+                    />
+                  </div>
+                  <div>
+                    <Textarea
+                      name="message"
+                      placeholder="Your Message"
+                      rows={5}
+                      required
+                      aria-label="Your Message"
+                    />
+                  </div>
+                  <Button type="submit" className="w-full cursor-pointer" disabled={loading}>
+                    <Mail className="mr-2 h-4 w-4" />
+                    {loading ? "Sending..." : "Send Message"}
+                  </Button>
+                </form>
               </CardContent>
             </Card>
           </motion.div>
@@ -124,3 +185,4 @@ export function ContactSection() {
     </section>
   );
 }
+

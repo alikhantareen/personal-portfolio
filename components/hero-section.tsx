@@ -3,10 +3,9 @@
 import { Button } from "@/components/ui/button";
 import { Download, Mail } from "lucide-react";
 import { motion } from "framer-motion";
-import { downloadResume } from "@/lib/utils"
+import { downloadResume } from "@/lib/utils";
 
 export function HeroSection() {
-
   return (
     <section
       id="home"
@@ -48,12 +47,11 @@ export function HeroSection() {
               <Download className="mr-2 h-4 w-4" />
               Download Resume
             </Button>
-            <a href="mailto:alikhantareen09@gmail.com">
-              <Button
-                variant="outline"
-                size="lg"
-                className="w-full sm:w-auto bg-transparent cursor-pointer"
-              >
+            <a
+              href="mailto:alikhantareen09@gmail.com"
+              className="w-full sm:w-auto bg-transparent cursor-pointer"
+            >
+              <Button variant="outline" size="lg" className="w-full sm:w-auto cursor-pointer">
                 <Mail className="mr-2 h-4 w-4" />
                 Contact Me
               </Button>

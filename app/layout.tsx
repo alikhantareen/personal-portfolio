@@ -5,6 +5,7 @@ import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import "./globals.css"
+import { AppToaster } from "@/components/toaster"
 
 export const metadata: Metadata = {
   title: "Ali - Software Engineer | MERN Stack Developer",
@@ -33,7 +34,9 @@ export default function RootLayout({
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
         <Suspense fallback={null}>{children}</Suspense>
         <Analytics />
+        <AppToaster />
       </body>
     </html>
   )
 }
+
