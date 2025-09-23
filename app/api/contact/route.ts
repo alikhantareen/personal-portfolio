@@ -14,7 +14,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // You can configure your recipient email via env; falls back to owner's email in repo
     const toEmail = process.env.CONTACT_TO_EMAIL || "alikhantareen09@gmail.com";
 
     const subject = `New Portfolio Contact from ${name}`;
