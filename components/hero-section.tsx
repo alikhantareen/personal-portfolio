@@ -30,7 +30,7 @@ export function HeroSection() {
               I'm Ali, a Software Engineer
             </h1>
             <p className="text-xl sm:text-2xl text-muted-foreground max-w-3xl mx-auto text-balance">
-              with 3 years of experience designing and delivering scalable,
+              with 4 years of experience designing and delivering scalable,
               user-focused digital solutions.
             </p>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-pretty">
